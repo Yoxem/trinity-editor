@@ -4,7 +4,7 @@ import re
 
 def change_html(self):
 	"""when any edit box is changed, change the content shown in result_webView."""
-	current_html_code = self.html_textedit.toPlainText()
+	current_html_code = self.html_textedit.text()
 	current_css_code = self.css_textedit.toPlainText()
 	current_js_code = self.js_textedit.toPlainText()
 	style_and_js_part = '<style>\n' + current_css_code + '</style>\n' + \

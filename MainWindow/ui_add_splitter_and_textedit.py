@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QSplitter, QFrame, QVBoxLayout, QPlainTextEdit, QLabel
 from PyQt5.QtCore import *
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QColor, QFontMetrics
+from PyQt5.Qsci import QsciScintilla, QsciLexerHTML
 
 def ui_add_splitter_and_textedit(self):
 	""""Set splitter, andthen create textEdits. Finally, append textEdits to the splitter."""
@@ -9,7 +10,7 @@ def ui_add_splitter_and_textedit(self):
 	
 	#set the default dont for the textEdits
 	default_font = QFont()
-	default_font_family = "文泉驛等寬微米黑" #"Mono"
+	default_font_family = "Mono" #"Mono"
 	default_font_size = 10
 	default_font.setFamily(default_font_family)
 	default_font.setPointSize(default_font_size)
@@ -23,7 +24,33 @@ def ui_add_splitter_and_textedit(self):
 	self.label_html = QLabel(self.html_verticalFrame)
 	self.label_html.setObjectName("label_html")
 	self.html_verticalLayout.addWidget(self.label_html)
-	self.html_textedit = QPlainTextEdit(self.html_verticalFrame)
+
+	self.html_textedit = QsciScintilla(self.html_verticalFrame)
+	self.html_textedit.setFont(default_font)
+
+	html_lexer = QsciLexerHTML()
+	html_lexer.setDefaultFont(default_font)
+	html_lexer.setFont(default_font, QsciLexerHTML.Default)
+	html_lexer.setFont(default_font, QsciLexerHTML.HTMLComment)
+	self.html_textedit.setLexer(html_lexer)
+	# WrapCharacter Lines are wrapped at character boundaries = 2
+	# See: http://pyqt.sourceforge.net/Docs/QScintilla2/classQsciScintilla.html#a7081c7ff25b5f6bd5b3a6cbd478a9f42
+	self.html_textedit.setWrapMode(2)
+
+	self.html_textedit.setMarginsFont(default_font)
+	fontmetrics = QFontMetrics(default_font)
+	self.html_textedit.setMarginWidth(0, fontmetrics.width("000") + 2)
+
+	# NumberMargin The margin contains line numbers = 3 
+	# See: http://pyqt.sourceforge.net/Docs/QScintilla2/classQsciScintilla.html#aedab060e87e0533083ea8f1398302090
+	self.html_textedit.setMarginLineNumbers(0, True)
+
+	self.html_textedit.setCaretLineVisible(True)
+	self.html_textedit.setCaretLineBackgroundColor(QColor("#FAEF8E"))
+
+
+
+
 	self.html_textedit.setObjectName("html_textedit")
 	self.html_verticalLayout.addWidget(self.html_textedit)
 
